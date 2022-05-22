@@ -1,0 +1,26 @@
+version: "3.8"
+services:
+  users_api:
+    build: ./users
+    ports:
+      - 9090:9000
+    volumes:
+      - ./users:/app
+    environment:
+      REDIS_HOST: redis
+      REDIS_DB: 0
+      REDIS_port: 6379
+
+  tasks_api:
+    build: ./users
+    ports:
+      - 9091:9000
+    volumes:
+      - ./tasks:/app
+    environment:
+      REDIS_HOST: redis
+      REDIS_DB: 1
+      REDIS_port: 6379
+
+  redis:
+    image: redis
