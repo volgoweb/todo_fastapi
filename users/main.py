@@ -1,9 +1,10 @@
 from typing import Optional, Dict, NoReturn
 from dataclasses import dataclass
 from os import environ
+import json
 
 import redis
-from fastapi import FastAPI, Header
+from fastapi import FastAPI, Header, HTTPException
 
 
 @dataclass
@@ -41,6 +42,9 @@ async def root():
 
 
 class GetMeData:
+    def __init__(self, redis_client):
+        self._redis_client = redis_client
+
     def run(self, user_id: int) -> Dict:
         cached = self._get_from_cache(user_id)
         if cached:
@@ -48,19 +52,24 @@ class GetMeData:
 
         data = self._get_from_db(user_id)
         if data:
-            self._cache(data)
+            self._cache(user_id, data=data)
         return data
 
     def _get_from_cache(self, user_id: int) -> Optional[Dict]:
         key = self._generate_cache_key(user_id)
-        return redis.get(key)
+        cached = self._redis_client.get(key)
+        if not cached:
+            return None
+        as_dict = json.loads(cached)
+        return as_dict
 
     def _get_from_db(self, user_id: int) -> Optional[Dict]:
         return fake_db_table.get(user_id, None)
 
     def _cache(self, user_id: int, data: dict) -> NoReturn:
         key = self._generate_cache_key(user_id)
-        return redis.set(key, data)
+        as_json = json.dumps(data)
+        return self._redis_client.set(key, as_json)
 
     @staticmethod
     def _generate_cache_key(user_id: int) -> str:
@@ -69,6 +78,9 @@ class GetMeData:
 
 @app.get("/me")
 async def me(x_user: Optional[str] = Header("")):
+    if not x_user:
+        raise HTTPException(status_code=403)
+
     user_id = int(x_user)
-    data = GetMeData().run(user_id)
+    data = GetMeData(redis_client=app.redis).run(user_id)
     return data
