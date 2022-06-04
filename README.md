@@ -1,3 +1,8 @@
+> It is a draft
+
+> Interesting example of code is located in `api_gateway/main.py`. 
+> The endpoint emulates gathering the different data from the several external sources (e.g. these might be a standalone microservices with rest API).
+
 # todo_fastapi
 A little learning project built with FastAPI framework.
 

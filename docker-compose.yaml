@@ -24,3 +24,6 @@ services:
 
   redis:
     image: redis
+
+networks:
+  todo:
