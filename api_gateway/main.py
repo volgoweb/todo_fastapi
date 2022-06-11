@@ -135,5 +135,4 @@ async def get_tasks():
         _extend_with_users_data(tasks_by_id, user_task_map),
         _extend_with_reminders_data(tasks_by_id, tasks_ids),
     )
-
     return list(tasks_by_id.values())

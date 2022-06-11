@@ -4,26 +4,46 @@ services:
     build: ./users
     ports:
       - 9090:9000
+    command: uvicorn main:app --host 0.0.0.0 --port 9000 --reload
     volumes:
       - ./users:/app
     environment:
       REDIS_HOST: redis
       REDIS_DB: 0
       REDIS_PORT: 6379
+    networks:
+      - todo
 
   tasks_api:
-    build: ./users
+    build: ./tasks
     ports:
-      - 9091:9000
+      - 9091:9001
+    command: uvicorn main:app --host 0.0.0.0 --port 9001 --reload
     volumes:
       - ./tasks:/app
     environment:
       REDIS_HOST: redis
       REDIS_DB: 1
       REDIS_PORT: 6379
+    networks:
+      - todo
 
   redis:
     image: redis
+
+  rabbit:
+    image: bitnami/rabbitmq:latest
+    networks:
+      - todo
+    environment:
+      - RABBITMQ_USERNAME=rabbit
+      - RABBITMQ_PASSWORD=rab
+#      - RABBITMQ_NODE_TYPE=queue-ram
+#      - RABBITMQ_NODE_NAME=rabbit@test_queue
+#      - RABBITMQ_NODE_PORT_NUMBER=5672
+    ports:
+      - 15672:15672
+      - 5672:5672
 
 networks:
   todo:

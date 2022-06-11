@@ -3,3 +3,4 @@ sqlalchemy
 uvicorn
 redis
 aiohttp
+aio-pika

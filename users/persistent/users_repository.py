@@ -14,7 +14,6 @@ class UsersRepository:
         return self.__fake_db_table.get(id_)
 
 """
-
 class GetMeData:
     def __init__(self, redis_client):
         self._redis_client = redis_client
