@@ -5,7 +5,7 @@ description = "Some"
 authors = ["volgoweb <volgoweb@bk.ru>"]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "3.9"
 requests = "2.27.1"
 aiohttp = "3.8.1"
 aio-pika = "8.0.3"
@@ -17,7 +17,9 @@ redis = "4.3.1"
 sqlalchemy = "1.4.36"
 uvicorn = "0.17.6"
 psycopg2 = "2.8"
-celery = "^5.2.7"
+celery = "<5.3"
+dependency-injector = "<5.0"
+pytest = "^7.1.2"
 
 [tool.poetry.dev-dependencies]
 

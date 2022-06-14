@@ -1,5 +1,6 @@
-from typing import Set, NoReturn
+from typing import Set, NoReturn, Optional
 from enum import Enum
+from pydantic import BaseModel
 
 
 class Status(Enum):
@@ -48,5 +49,9 @@ class StatusMixin:
         return statuses
 
 
-class Task(StatusMixin):
-    pass
+class Task(BaseModel, StatusMixin):
+    id: int
+    title: str
+    description: Optional[str] = ""
+
+
