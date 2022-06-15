@@ -1,4 +1,4 @@
-from typing import Set, NoReturn, Optional
+from typing import Set, Optional, Dict
 from enum import Enum
 from pydantic import BaseModel
 
@@ -11,7 +11,7 @@ class Status(Enum):
 
 
 class StatusMixin:
-    __TRANSITIONS_MAP = {
+    __TRANSITIONS_MAP: Dict[Status, Set[Status]] = {
         Status.DRAFT: {
             Status.TODO,
             Status.IN_PROGRESS,
@@ -27,8 +27,10 @@ class StatusMixin:
         },
     }
 
-    def __init__(self, status: Status):
+    def __init__(self, status: Status, **kwargs):
+        print("---status", status)
         self.status = status
+        super().__init__(**kwargs)
 
     @property
     def status(self):
@@ -38,13 +40,13 @@ class StatusMixin:
     def status(self, status: Status):
         self.__status = Status(status)
 
-    def transit_status(self, new_value: Status) -> NoReturn:
+    def transit_status(self, new_value: Status) -> None:
         if new_value in self._get_allowed_statuses():
             self.__status = new_value
 
     def _get_allowed_statuses(self) -> Set[Status]:
-        status_from = self.__status
-        statuses = self.__TRANSITIONS_MAP.get(status_from, {})
+        status_from: Status = self.__status
+        statuses: Set[Status] = self.__TRANSITIONS_MAP.get(status_from, set())
         statuses.add(status_from)
         return statuses
 

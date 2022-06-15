@@ -1,5 +1,6 @@
 from typing import List
 from tasks.domain.models import Task, Status
+from tasks import schemas
 
 FAKE_TASKS_DATA = {
     1: Task(
@@ -36,3 +37,13 @@ class HardCodedTasksRepository:
     def get_by_id(self, id_: int) -> Task:
         return FAKE_TASKS_DATA[id_]
 
+    def create(self, schema: schemas.CreateTaskData) -> Task:
+        data = schema.__dict__
+        last_id = max(FAKE_TASKS_DATA.keys())
+        task_id = last_id + 1
+        data["id"] = task_id
+        if not data["status"]:
+            del data["status"]
+        task = Task(**data)
+        FAKE_TASKS_DATA[task_id] = task
+        return task

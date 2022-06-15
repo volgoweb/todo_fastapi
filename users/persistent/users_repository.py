@@ -2,7 +2,7 @@ from typing import Optional, Dict
 
 
 class UsersRepository:
-    __fake_db_table = {
+    __fake_db_table: Dict[int, Dict[str, str]] = {
         0: {
             "first_name": "John",
             "last_name": "Carlson",

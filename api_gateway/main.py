@@ -3,7 +3,7 @@ from collections import defaultdict
 from fastapi import FastAPI
 from pydantic import BaseModel
 import asyncio
-from icecream import ic
+from icecream import ic  # type: ignore
 
 
 app = FastAPI()
@@ -92,7 +92,7 @@ class ReminderCollection:
         ]
 
 
-async def _extend_with_users_data(tasks_by_id: Dict, user_task_map: DefaultDict[int, Set]) -> NoReturn:
+async def _extend_with_users_data(tasks_by_id: Dict, user_task_map: DefaultDict[int, Set]) -> None:
     ic("_extend_with_users_data START")
     users_ids = set(user_task_map.keys())
     users = await UserCollection().get_many_by_ids(users_ids)
@@ -104,7 +104,7 @@ async def _extend_with_users_data(tasks_by_id: Dict, user_task_map: DefaultDict[
     ic("_extend_with_users_data END")
 
 
-async def _extend_with_reminders_data(tasks_by_id: Dict, tasks_ids: Set) -> NoReturn:
+async def _extend_with_reminders_data(tasks_by_id: Dict, tasks_ids: Set) -> None:
     ic("_extend_with_reminders_data START")
     reminders = await ReminderCollection().get_many_by_tasks_ids(tasks_ids)
     for reminder in reminders:

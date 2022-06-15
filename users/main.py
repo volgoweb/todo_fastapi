@@ -3,7 +3,7 @@ from os import environ
 
 import redis
 from fastapi import FastAPI
-from api.endpoints import api_router
+from users.api.endpoints import api_router
 
 
 app = FastAPI()
@@ -24,11 +24,12 @@ try:
         port=int(environ["REDIS_PORT"]),
     )
 
-    app.redis = redis.Redis(
+    redis_client = redis.Redis(
         host=redis_config.host,
         port=redis_config.port,
         db=redis_config.db,
     )
+    setattr(app, "redis_client", redis_client)
 except:
     print("Redis undefined")
 
