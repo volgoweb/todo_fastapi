@@ -7,8 +7,3 @@ app = FastAPI()
 app.include_router(router)
 container = Container()
 container.wire(packages=["tasks"])
-def bla(x: int):
-    print("x")
-
-bla(2)
-# ..
