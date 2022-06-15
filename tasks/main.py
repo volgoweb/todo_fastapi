@@ -7,4 +7,3 @@ app = FastAPI()
 app.include_router(router)
 container = Container()
 container.wire(packages=["tasks"])
-# Don't add routes here
