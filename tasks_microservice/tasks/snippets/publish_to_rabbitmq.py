@@ -1,7 +1,7 @@
 import aio_pika
 import aio_pika.abc
 import asyncio
-from tasks.main import app
+from tasks.main import app  # type: ignore
 
 
 @app.get("/sandbox/publish-event")

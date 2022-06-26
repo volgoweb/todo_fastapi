@@ -1,0 +1,2 @@
+class StatusTransitionForbidden(Exception):
+    pass

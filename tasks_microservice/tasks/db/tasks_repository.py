@@ -1,6 +1,7 @@
 from typing import List
 from tasks.domain.models import Task, Status
-from tasks import schemas
+from tasks.domain.schemas import CreateTaskInput, UpdateTaskInput
+from tasks.domain.interfaces.repo_interfaces import ITaskRepo
 
 FAKE_TASKS_DATA = {
     1: Task(
@@ -30,14 +31,14 @@ FAKE_TASKS_DATA = {
 }
 
 
-class HardCodedTasksRepository:
+class HardCodedTasksRepository(ITaskRepo):
     def get_many(self) -> List[Task]:
         return list(FAKE_TASKS_DATA.values())
 
-    def get_by_id(self, id_: int) -> Task:
-        return FAKE_TASKS_DATA[id_]
+    def get_by_id(self, task_id: int) -> Task:
+        return FAKE_TASKS_DATA[task_id]
 
-    def create(self, schema: schemas.CreateTaskData) -> Task:
+    def create_task(self, schema: CreateTaskInput) -> Task:
         data = schema.__dict__
         last_id = max(FAKE_TASKS_DATA.keys())
         task_id = last_id + 1
@@ -47,3 +48,6 @@ class HardCodedTasksRepository:
         task = Task(**data)
         FAKE_TASKS_DATA[task_id] = task
         return task
+
+    def update_task(self, data: UpdateTaskInput) -> Task:
+        raise NotImplementedError()
