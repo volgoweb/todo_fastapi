@@ -1,5 +1,5 @@
 from fastapi import APIRouter
-from tasks.api.schemas import MsgResponse
+from membership.api.schemas import MsgResponse
 
 router = APIRouter()
 

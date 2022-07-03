@@ -8,4 +8,4 @@ client = TestClient(app)
 def test_happy_path():
     response = client.get("/healthcheck")
     assert response.status_code == status.HTTP_200_OK
-    assert response.json() == {"msg": "ok"}
+    assert response.json() == {"msg": "pong"}
